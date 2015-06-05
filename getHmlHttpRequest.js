@@ -2,19 +2,24 @@
  * Created by imon on 20.05.2015.
  */
 function getXmlHttpRequest() {
-    if (window.XMLHttpRequest) {
-        try {
+    if (window.XMLHttpRequest)
+    {
+        try
+        {
             return new XMLHttpRequest();
         }
         catch (e) {
         }
     }
-    else if (window.ActiveXObject) {
-        try {
+    else if (window.ActiveXObject)
+    {
+        try
+        {
             return new ActiveXObject('Msxml2.XMLHTTP');
         } catch (e) {
         }
-        try {
+        try
+        {
             return new ActiveXObject('Microsoft.XMLHTTP');
         }
         catch (e) {

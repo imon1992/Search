@@ -1,5 +1,5 @@
 <?php
-require_once'../SearchQuery.class.php';
+require_once '../DOU/SearchQuery.class.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $json = file_get_contents('php://input');
     $searchParams = json_decode($json);
