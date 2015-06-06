@@ -9,11 +9,12 @@ class ParseId{
                 preg_match("/\/\d+\//", $linksToJobsArray[$i], $arrayOfVacancies);
                 preg_match("/\d+/", $arrayOfVacancies[0], $arrayOfVacanciesId);
                 $idOfVacancies = $arrayOfVacanciesId[0];
-                $data[] = array(
-                    'id_vacancies' => "$idOfVacancies"
+                $idAndLinksArray[] = array(
+                    'id_vacancies' => $idOfVacancies,
+                    'linksToJob' => $linksToJobsArray[$i]
                 );
             }
         }
-        return $data;
+        return $idAndLinksArray;
     }
 }

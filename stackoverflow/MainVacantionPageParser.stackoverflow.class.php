@@ -139,23 +139,32 @@ class MainVacationPageParser
 }
 
 $c = new MainVacationPageParser();
-$a = $c->allLinks('http://careers.stackoverflow.com/jobs?searchTerm=php', 'php');
-echo '<pre>';
-print_r($a);
+$a = $c->allLinks('http://careers.stackoverflow.com/jobs/tag/symfony2', 'symfony2');
+//echo '<pre>';
+//print_r($a);
 //$a = $c->linksParse('http://careers.stackoverflow.com/jobs?searchTerm=php&pg=2', 'php');
 //echo '<pre>';
 //print_r($a);
 
-//include_once "ParserIdFromLinks.stackoverflow.class.php";
-//$d = new ParseId();
-//$s = $d->processingReferences($a);
+include_once "ParserIdFromLinks.stackoverflow.class.php";
+$d = new ParseId();
+$s = $d->processingReferences($a);
+
+//echo '<pre>';
+//print_r($s);
 //
-////echo '<pre>';
-////print_r($s);
-//
-//include_once "CacheGetter.stackoverflow.class.php";
-//$h = new CacheGetter1();
-//$t = $h->formationMapWithText($s);
+include_once "CacheGetter.stackoverflow.class.php";
+$h = new CacheGetter1();
+$t = $h->formationMapWithText($s);
 //
 //echo '<pre>';
 //print_r($t);
+
+include_once 'ProcessingDataArrayWithText.stackoverflow.class.php';
+
+$y = new ProcessingDataArrayWithText();
+$k = $y->takeTheMissingText($t);
+
+
+//echo '<pre>';
+//print_r($k);
