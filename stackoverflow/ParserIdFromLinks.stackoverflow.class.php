@@ -1,7 +1,7 @@
 <?php
 //namespace stackoverflow;
 
-class ParseId{
+class ParserIdFromLinks{
     public function processingReferences($linksToJobsArray){
         if (!empty($linksToJobsArray)) {
             $linksToJobsLength = sizeof($linksToJobsArray);

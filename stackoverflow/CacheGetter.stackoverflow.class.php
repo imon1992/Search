@@ -4,7 +4,7 @@
 //проверяет есть ли в базе такая запись, если есть достает ей и ложит в поле text, если нету то в поле текст ложиться null
 include_once '../BD/WorkWithDB.stackoverflow.class.php';
 
-class CacheGetter1 {
+class CacheGetter {
     function formationMapWithText($idAndLinksArray) {
 //        var_dump($idAndLinksArray);
         foreach ($idAndLinksArray as $val) {
