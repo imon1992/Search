@@ -3,7 +3,7 @@
 //класс возвращяет ссылки с вакансиями
 include_once '../simpl/simple_html_dom.php';
 
-class MainVacantionPageParser {
+class MainVacationPageParser {
 
     function parseFirstPart($url) {
         if ($curl = curl_init()) {
@@ -19,17 +19,22 @@ class MainVacantionPageParser {
         return $linksToJobs;
     }
 
-    function parceNextPart($url) {
-        $position = stripos($url, '=');
-        $lengthURL = strlen($url);
-        $languageName = substr($url, $position + 1, $lengthURL);
-        $beginningCityPosition = stripos($url, 'city=');
-        if ($beginningCityPosition !== false) {
-            $newLine = substr($url, $beginningCityPosition + 5, $lengthURL); //cтрока типа "город&search=язык"
-            $searchPosition = stripos($newLine, '&search');
-            $lengthNewLine = strlen($newLine);
-            $cityName = substr($newLine, -$lengthNewLine, $searchPosition);  //строка типа "Город"
-        }
+    function parseNextPart($searchTagAndCity) {
+        $searchTag = $searchTagAndCity[0];
+        $city = $searchTagAndCity[1];
+        if($city === false) {
+            $url = 'http://jobs.dou.ua/vacancies/?search=' . $searchTag;
+        }else{$url ='http://jobs.dou.ua/vacancies/?city=' . $city . '&search=' . $searchTag;  }
+//        $position = stripos($url, '=');
+//        $lengthURL = strlen($url);
+//        $languageName = substr($url, $position + 1, $lengthURL);
+//        $beginningCityPosition = stripos($url, 'city=');
+//        if ($beginningCityPosition !== false) {
+//            $newLine = substr($url, $beginningCityPosition + 5, $lengthURL); //cтрока типа "город&search=язык"
+//            $searchPosition = stripos($newLine, '&search');
+//            $lengthNewLine = strlen($newLine);
+//            $cityName = substr($newLine, -$lengthNewLine, $searchPosition);  //строка типа "Город"
+//        }
         $html = file_get_html($url);
         foreach ($html->find('div.b-vacancies-head h1') as $element) {
             $arrayReferencesVacancies[] = $element->innertext;
@@ -51,11 +56,12 @@ class MainVacantionPageParser {
         for ($nextVacancies = 20; $nextVacancies <= ($numberOfIterations * 40) + 20; $nextVacancies+=40) {
 
             $curl = curl_init();
-            if ($beginningCityPosition !== false) {
-                curl_setopt($curl, CURLOPT_URL, "http://jobs.dou.ua/vacancies/xhr-load/?city=$cityName&search=$languageName");
-            } else {
-                curl_setopt($curl, CURLOPT_URL, "http://jobs.dou.ua/vacancies/xhr-load/?search=$languageName");
-            }
+//            if ($beginningCityPosition !== false) {
+//                curl_setopt($curl, CURLOPT_URL, "http://jobs.dou.ua/vacancies/xhr-load/?city=$cityName&search=$languageName");
+                curl_setopt($curl, CURLOPT_URL, $url);
+//            } else {
+//                curl_setopt($curl, CURLOPT_URL, "http://jobs.dou.ua/vacancies/xhr-load/?search=$languageName");
+//            }
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, "count=$nextVacancies&csrfmiddlewaretoken=sTZxFTpI7xU7TtxB4lVfNUTQcT55BFPm");
@@ -78,6 +84,6 @@ class MainVacantionPageParser {
 
 }
 //$c = new MainVacantionPageParser();
-//$x =$c->parceNextPart('http://jobs.dou.ua/vacancies/?city=%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2&search=PHP');
+//$x =$c->parseNextPart('http://jobs.dou.ua/vacancies/?city=%D0%9D%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D0%B5%D0%B2&search=PHP');
 //echo '<pre>';
 //print_r($x);

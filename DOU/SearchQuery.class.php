@@ -4,16 +4,16 @@
 //получаем массив с данными о вакансиях и делаем поиск по этим данным
 include_once '../simpl/simple_html_dom.php';
 include_once 'ProcessingDataArrayWithText.class.php';
-include_once 'MainVacantionPageParser.class.php';
+include_once 'MainVacationPageParser.class.php';
 include_once 'CacheGetter.class.php';
 include_once 'ParserIdAndCompanyFromLinks.class.php';
 
-class searchQuery {
+class SearchQuery {
 
-    function search($url, $searchObject) {
+    function search($searchTagAndCity, $searchObject) {
 //        $searchObject = json_decode($searchObject);
-        $mainVacantionPageParser = new MainVacantionPageParser();
-        $linksToJobsArray = $mainVacantionPageParser->parceNextPart($url);
+        $mainVacationPageParser = new MainVacationPageParser();
+        $linksToJobsArray = $mainVacationPageParser->parseNextPart($searchTagAndCity);
 
         $parserIdAndCompanyFromLinks = new ParserIdAndCompanyFromLinks();
         $idAndCompanyArray = $parserIdAndCompanyFromLinks->processingReferences($linksToJobsArray);
@@ -21,8 +21,8 @@ class searchQuery {
         $cacheGetter = new CacheGetter();
         $idAndCompaniesAndMayNotBeCompleteTextArray = $cacheGetter->formationMapWithText($idAndCompanyArray);
 
-        $processingDataArrayWhithText = new ProcessingDataArrayWhithText();
-        $fullMapArray = $processingDataArrayWhithText->takeTheMissingText($idAndCompaniesAndMayNotBeCompleteTextArray);
+        $processingDataArrayWithText = new ProcessingDataArrayWithText();
+        $fullMapArray = $processingDataArrayWithText->takeTheMissingText($idAndCompaniesAndMayNotBeCompleteTextArray);
 
 
         $searchResultMap = $this->findKeyWords($fullMapArray, $searchObject);
@@ -32,14 +32,6 @@ class searchQuery {
     function findKeyWords($fullMapArray, $searchObject) {
         foreach ($fullMapArray as $idAndCompanyAndText) {
             foreach ($searchObject as $searchStringObject) {
-//                var_dump($searchStringObject->search);
-//                $r = $searchStringObject->notPresented[0];
-//                var_dump($searchStringObject->notPresented[0]);
-//                foreach($searchStringObject->notPresented[0] as $ass){
-//                    echo 'object';
-//                }
-//                $c = sizeof($r);
-//                echo $c;
                 $isAllKeysPresented = $this->isKeyPresent($searchStringObject->search, $idAndCompanyAndText['text']);
                 if($searchStringObject->notPresented !== null){
                 $isPresentedKeyPresent = $this->isKeyPresent(
@@ -101,8 +93,6 @@ class searchQuery {
                 $searchResultMap[$searchStringObject->name] = 0;
             }
         }
-//        echo'<pre>';
-//        echo $searchResultMap;
         return $searchResultMap;
 
     }

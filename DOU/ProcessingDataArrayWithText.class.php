@@ -3,7 +3,7 @@ header("Content-Type: text/html; charset=utf-8");
 //принимает маасив с текстом или без него, если текста нету(для данной компании),делает запросс на страницу и добавляет текст в базу
 include_once '../BD/WorkWithDB.DOU.class.php';
 //include_once 'simpl/simple_html_dom.php';
-class ProcessingDataArrayWhithText {
+class ProcessingDataArrayWithText {
 //    function takeTheMissingTextInLinks($idAndCompaniesAndMayNotBeCompleteTextArray){
 //
 //    }
